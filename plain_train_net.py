@@ -374,8 +374,8 @@ class Trainer(DefaultTrainer):
 
         self.optimizer.step()
 
-        # Optional: log the average loss
-        self._write_metrics(loss_dict_total)
+        # # Optional: log the average loss
+        # self._write_metrics(loss_dict_total)
 
         end.record()
 
