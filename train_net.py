@@ -72,6 +72,8 @@ class Trainer(DefaultTrainer):
     Extension of the Trainer class adapted to MaskFormer.
     """
 
+    accumulate_steps = 4
+
     @classmethod
     def build_evaluator(cls, cfg, dataset_name, output_folder=None):
         """
@@ -284,6 +286,37 @@ class Trainer(DefaultTrainer):
         res = cls.test(cfg, model, evaluators)
         res = OrderedDict({k + "_TTA": v for k, v in res.items()})
         return res
+    
+    def run_step(self):
+        assert self.model.training, "[AccumGradTrainer] model was changed to eval mode!"
+        start = torch.cuda.Event(enable_timing=True)
+        end = torch.cuda.Event(enable_timing=True)
+
+        start.record()
+
+        # Accumulate gradients
+        loss_dict_total = {}
+        self.optimizer.zero_grad()
+
+        for i in range(self.accumulate_steps):
+            data = next(self._data_loader_iter)
+            loss_dict = self.model(data)
+            losses = sum(loss_dict.values()) / self.accumulate_steps
+            losses.backward()
+
+            # Optional: log intermediate loss
+            if i == 0:
+                loss_dict_total = loss_dict
+            else:
+                for k in loss_dict:
+                    loss_dict_total[k] += loss_dict[k]
+
+        self.optimizer.step()
+
+        # Optional: log the average loss
+        self._write_metrics(loss_dict_total)
+
+        end.record()
 
 
 def setup(args):
