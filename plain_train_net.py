@@ -121,7 +121,7 @@ class Trainer(DefaultTrainer):
         model = self.build_model(cfg)
         optimizer = self.build_optimizer(cfg, model)
         data_loader = self.build_train_loader(cfg)
-        self._data_loader_iter = iter(self.data_loader)
+        self._data_loader_iter = iter(data_loader)
 
         model = create_ddp_model(model, broadcast_buffers=False, find_unused_parameters=True)
         self._trainer = (AMPTrainer if cfg.SOLVER.AMP.ENABLED else SimpleTrainer)(
