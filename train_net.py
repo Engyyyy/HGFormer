@@ -288,6 +288,7 @@ class Trainer(DefaultTrainer):
         return res
     
     def run_step(self):
+        raise RuntimeError("Custom Trainer.run_step() is being called!")
         print("########################### Accumulative Gradient ##################")
         assert self.model.training, "[AccumGradTrainer] model was changed to eval mode!"
         start = torch.cuda.Event(enable_timing=True)
