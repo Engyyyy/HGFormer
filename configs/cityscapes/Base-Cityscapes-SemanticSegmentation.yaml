@@ -7,18 +7,18 @@ MODEL:
   PIXEL_STD: [58.395, 57.120, 57.375]
   RESNETS:
     DEPTH: 50
-    STEM_TYPE: "basic"  # not used
+    STEM_TYPE: "basic" # not used
     STEM_OUT_CHANNELS: 64
     STRIDE_IN_1X1: False
     OUT_FEATURES: ["res2", "res3", "res4", "res5"]
-    NORM: "SyncBN"  # use syncbn for cityscapes dataset
-    RES5_MULTI_GRID: [1, 1, 1]  # not used
+    NORM: "SyncBN" # use syncbn for cityscapes dataset
+    RES5_MULTI_GRID: [1, 1, 1] # not used
 
 DATASETS:
   TRAIN: ("cityscapes_fine_sem_seg_train",)
-  TEST: ("cityscapes_fine_sem_seg_val", "mapillary_val", "bdd_val", "gta_trainid_val", "synthia_val")
+  TEST: ("cityscapes_fine_sem_seg_val")
 SOLVER:
-  IMS_PER_BATCH: 16
+  IMS_PER_BATCH: 4
   BASE_LR: 0.0001
   MAX_ITER: 90000
   WARMUP_FACTOR: 1.0
@@ -37,7 +37,8 @@ SOLVER:
   AMP:
     ENABLED: True
 INPUT:
-  MIN_SIZE_TRAIN: !!python/object/apply:eval ["[int(x * 0.1 * 1024) for x in range(5, 21)]"]
+  MIN_SIZE_TRAIN:
+    !!python/object/apply:eval ["[int(x * 0.1 * 1024) for x in range(5, 21)]"]
   MIN_SIZE_TRAIN_SAMPLING: "choice"
   MIN_SIZE_TEST: 1024
   MAX_SIZE_TRAIN: 4096
@@ -62,5 +63,4 @@ DATALOADER:
   FILTER_EMPTY_ANNOTATIONS: True
   NUM_WORKERS: 4
 VERSION: 2
-
 #CUDNN_BENCHMARK: True
