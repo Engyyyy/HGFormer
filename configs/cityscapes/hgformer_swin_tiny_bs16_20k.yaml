@@ -18,7 +18,7 @@ MODEL:
 #  TEST: ("synthia_val", "cityscapes_fine_sem_seg_val", "bdd_val", "mapillary_val", "gta_trainid_val")
 SOLVER:
   MAX_ITER: 20000
-  IMS_PER_BATCH: 16
+  IMS_PER_BATCH: 4
 
 TEST:
   CLUSTER_SOFTMAX: True
