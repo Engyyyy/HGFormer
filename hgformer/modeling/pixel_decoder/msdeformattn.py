@@ -505,7 +505,7 @@ class MSDeformAttnPixelDecoderv2(nn.Module):
         ret["common_stride"] = cfg.MODEL.SEM_SEG_HEAD.COMMON_STRIDE
         return ret
 
-    @autocast(enabled=False)
+    @autocast(device_type="cuda", enabled=False)
     def forward_features(self, features):
         srcs = []
         pos = []
@@ -692,7 +692,7 @@ class MSDeformAttnPixelDecoderv3(nn.Module):
         ret["common_stride"] = cfg.MODEL.SEM_SEG_HEAD.COMMON_STRIDE
         return ret
 
-    @autocast(enabled=False)
+    @autocast(device_type="cuda", enabled=False)
     def forward_features(self, features):
         srcs = []
         pos = []
@@ -851,7 +851,7 @@ class MSDeformAttnPixelDecodervSingleLayer(nn.Module):
         ret["common_stride"] = cfg.MODEL.SEM_SEG_HEAD.COMMON_STRIDE
         return ret
 
-    @autocast(enabled=False)
+    @autocast(device_type="cuda", enabled=False)
     def forward_features(self, features):
         srcs = []
         pos = []
